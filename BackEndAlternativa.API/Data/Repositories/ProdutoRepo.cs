@@ -18,7 +18,7 @@ namespace BackEndAlternativa.API.Data.Repositories
 
         public async Task<IEnumerable<Produto>> GetAll()
         {
-            return await _context.produtos.AsNoTracking().ToListAsync();
+            return await _context.produtos.AsNoTracking().Include(prod => prod.Categoria).ToListAsync();
         }
 
         public async Task<Produto> GetById(int Id)

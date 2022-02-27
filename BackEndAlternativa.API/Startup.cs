@@ -1,20 +1,16 @@
-using BackEndAlternativa.API.Data;
-using BackEndAlternativa.API.Data.Repositories;
-using BackEndAlternativa.API.Data.Repositories.Interfaces;
+using System;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
+using BackEndAlternativa.API.Data;
+using BackEndAlternativa.API.Data.Repositories;
+using BackEndAlternativa.API.Data.Repositories.Interfaces;
 
 namespace BackEndAlternativa.API
 {
@@ -37,6 +33,8 @@ namespace BackEndAlternativa.API
             
             services.AddScoped<IProdutoRepo, ProdutoRepo>();
             services.AddScoped<ICategoriaRepo, CategoriaRepo>();
+            
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddControllers().AddNewtonsoftJson(
                         opt => opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);

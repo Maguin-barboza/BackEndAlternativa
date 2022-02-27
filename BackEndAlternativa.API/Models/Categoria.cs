@@ -12,6 +12,6 @@ namespace BackEndAlternativa.API.Models
         [Column("descricao")]
         public string Descricao { get; set; }
 
-        public IEnumerable<Produto> produtos { get; set; }
+        public IEnumerable<Produto> Produtos { get; set; }
     }
 }

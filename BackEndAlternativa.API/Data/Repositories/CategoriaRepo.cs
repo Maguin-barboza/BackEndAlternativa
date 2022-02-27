@@ -23,7 +23,7 @@ namespace BackEndAlternativa.API.Data.Repositories
 
         public async Task<Categoria> GetById(int Id)
         {
-            return await _context.categorias.AsNoTracking().Where(cat => cat.Id == Id).Include(cat => cat.produtos).FirstOrDefaultAsync();
+            return await _context.categorias.AsNoTracking().Where(cat => cat.Id == Id).Include(cat => cat.Produtos).FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<Categoria>> GetByName(string Nome)
@@ -35,9 +35,9 @@ namespace BackEndAlternativa.API.Data.Repositories
         {
             Categoria categoriaAux = await _context.categorias.AsNoTracking()
                                                    .Where(cat => cat.Id == Id)
-                                                   .Include(cat => cat.produtos).FirstOrDefaultAsync();
+                                                   .Include(cat => cat.Produtos).FirstOrDefaultAsync();
             
-            return categoriaAux.produtos.Count() > 0;
+            return categoriaAux.Produtos.Count() > 0;
         }
 
         public void Insert(Categoria categoria)
