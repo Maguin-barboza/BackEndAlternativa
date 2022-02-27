@@ -10,6 +10,7 @@ using BackEndAlternativa.API.Data.Repositories.Interfaces;
 using BackEndAlternativa.API.Models;
 using BackEndAlternativa.API.Controllers.DTOs.Queries;
 using BackEndAlternativa.API.Controllers.DTOs.Commands;
+using BackEndAlternativa.API.Data.Repositories.Filters;
 
 
 
@@ -32,9 +33,9 @@ namespace BackEndAlternativa.API.Controllers
 
         // GET: api/<CategoriaController>
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> Get([FromQuery] FilterCategoria query)
         {
-            IEnumerable<Categoria> categorias = await _repository.GetAll();
+            IEnumerable<Categoria> categorias = await _repository.GetAll(query);
             return Ok(_mapper.Map<IEnumerable<CategoriaWithoutProdutosDTO>>(categorias));
         }
 
@@ -45,13 +46,6 @@ namespace BackEndAlternativa.API.Controllers
         {
             Categoria categoria = await _repository.GetById(id);
             return Ok(_mapper.Map<CategoriaWithProdutosDTO>(categoria));
-        }
-
-        [HttpGet("{nome}")]
-        public async Task<IActionResult> Get(string nome)
-        {
-            IEnumerable<Categoria> categorias = await _repository.GetByName(nome);
-            return Ok(_mapper.Map<IEnumerable<CategoriaWithoutProdutosDTO>>(categorias));
         }
 
         // POST api/<CategoriaController>

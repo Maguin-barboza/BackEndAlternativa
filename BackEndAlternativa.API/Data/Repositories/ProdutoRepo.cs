@@ -1,4 +1,6 @@
-﻿using BackEndAlternativa.API.Data.Repositories.Interfaces;
+﻿using AspNetCore.IQueryable.Extensions.Filter;
+using BackEndAlternativa.API.Data.Repositories.Filters;
+using BackEndAlternativa.API.Data.Repositories.Interfaces;
 using BackEndAlternativa.API.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -16,9 +18,9 @@ namespace BackEndAlternativa.API.Data.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Produto>> GetAll()
+        public async Task<IEnumerable<Produto>> GetAll(FilterProduto query)
         {
-            return await _context.produtos.AsNoTracking().Include(prod => prod.Categoria).ToListAsync();
+            return await _context.produtos.Filter(query).AsNoTracking().Include(prod => prod.Categoria).ToListAsync();
         }
 
         public async Task<Produto> GetById(int Id)
@@ -26,16 +28,6 @@ namespace BackEndAlternativa.API.Data.Repositories
             return await _context.produtos.AsNoTracking().Where(prod => prod.Id == Id)
                                                          .Include(prod => prod.Categoria)
                                                          .FirstOrDefaultAsync();
-        }
-
-        public async Task<IEnumerable<Produto>> GetByName(string Name)
-        {
-            return await _context.produtos.AsNoTracking().Where(prod => prod.Nome.ToLower().Contains(Name.ToLower())).ToListAsync();
-        }
-
-        public async Task<IEnumerable<Produto>> GetByCategoria(int CategoriaId)
-        {
-            return await _context.produtos.AsNoTracking().Where(prod => prod.CategoriaId == CategoriaId).ToListAsync();
         }
 
         public void Insert(Produto produto)

@@ -1,9 +1,15 @@
-﻿using BackEndAlternativa.API.Data.Repositories.Interfaces;
-using BackEndAlternativa.API.Models;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
+using Microsoft.EntityFrameworkCore;
+using AspNetCore.IQueryable.Extensions.Filter;
+
+using BackEndAlternativa.API.Data.Repositories.Filters;
+using BackEndAlternativa.API.Data.Repositories.Interfaces;
+using BackEndAlternativa.API.Models;
+
+
 
 namespace BackEndAlternativa.API.Data.Repositories
 {
@@ -16,28 +22,14 @@ namespace BackEndAlternativa.API.Data.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Categoria>> GetAll()
+        public async Task<IEnumerable<Categoria>> GetAll(FilterCategoria query)
         {
-            return await _context.categorias.AsNoTracking().ToListAsync();
+            return await _context.categorias.AsNoTracking().Filter(query).ToListAsync();
         }
 
         public async Task<Categoria> GetById(int Id)
         {
             return await _context.categorias.AsNoTracking().Where(cat => cat.Id == Id).Include(cat => cat.Produtos).FirstOrDefaultAsync();
-        }
-
-        public async Task<IEnumerable<Categoria>> GetByName(string Nome)
-        {
-            return await _context.categorias.AsNoTracking().Where(cat => cat.Nome.ToLower().Contains(Nome.ToLower())).ToListAsync();
-        }
-
-        public async Task<bool> HasProd(int Id)
-        {
-            Categoria categoriaAux = await _context.categorias.AsNoTracking()
-                                                   .Where(cat => cat.Id == Id)
-                                                   .Include(cat => cat.Produtos).FirstOrDefaultAsync();
-            
-            return categoriaAux.Produtos.Count() > 0;
         }
 
         public void Insert(Categoria categoria)

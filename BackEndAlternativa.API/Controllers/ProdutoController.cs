@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Linq;
+using System.Collections.Generic;
 
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
 using BackEndAlternativa.API.Models;
 using BackEndAlternativa.API.Data.Repositories.Interfaces;
-using AutoMapper;
-using System.Collections.Generic;
 using BackEndAlternativa.API.Controllers.DTOs.Queries;
 using BackEndAlternativa.API.Controllers.DTOs.Commands;
+using BackEndAlternativa.API.Data.Repositories.Filters;
 
 
 
@@ -31,9 +32,9 @@ namespace BackEndAlternativa.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get([FromQuery] FilterProduto query)
         {
-            IEnumerable<Produto> produtos = await _repository.GetAll();
+            IEnumerable<Produto> produtos = await _repository.GetAll(query);
             return Ok(_mapper.Map<IEnumerable<ProdutoWithCategoriaDTO>>(produtos));
         }
 
@@ -42,20 +43,6 @@ namespace BackEndAlternativa.API.Controllers
         {
             Produto produto = await _repository.GetById(id);
             return Ok(_mapper.Map<ProdutoWithCategoriaDTO>(produto));
-        }
-
-        [HttpGet("{nome}")]
-        public async Task<IActionResult> Get(string nome)
-        {
-            IEnumerable<Produto> produtos = await _repository.GetByName(nome);
-            return Ok(_mapper.Map<IEnumerable<ProdutoWithCategoriaDTO>>(produtos));
-        }
-
-        [HttpGet("/byCategoriaId/{categoriaId}")]
-        public async Task<IActionResult> GetByCategoria(int categoriaId)
-        {
-            IEnumerable<Produto> produtos = await _repository.GetByCategoria(categoriaId);
-            return Ok(_mapper.Map<IEnumerable<ProdutoWithoutCategoria>>(produtos));
         }
 
         [HttpPost]
@@ -77,7 +64,7 @@ namespace BackEndAlternativa.API.Controllers
         }
 
         // PUT api/<ProdutoController>/5
-        [HttpPut("{id}")]
+        [HttpPut]
         public async Task<IActionResult> Put([FromBody] ProdutoUpdateDTO produtoDTO)
         {
             try
