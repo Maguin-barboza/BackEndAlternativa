@@ -7,7 +7,7 @@ using AspNetCore.IQueryable.Extensions.Filter;
 
 using BackEndAlternativa.API.Data.Repositories.Filters;
 using BackEndAlternativa.API.Data.Repositories.Interfaces;
-using BackEndAlternativa.API.Models;
+using BackEndAlternativa.Domain.Models;
 
 
 

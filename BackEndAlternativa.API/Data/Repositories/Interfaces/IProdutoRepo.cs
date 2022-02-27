@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 
 using BackEndAlternativa.API.Data.Repositories.Filters;
-using BackEndAlternativa.API.Models;
+using BackEndAlternativa.Domain.Models;
 
 namespace BackEndAlternativa.API.Data.Repositories.Interfaces
 {

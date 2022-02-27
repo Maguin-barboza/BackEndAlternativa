@@ -2,7 +2,7 @@
 
 using BackEndAlternativa.API.Controllers.DTOs.Commands;
 using BackEndAlternativa.API.Controllers.DTOs.Queries;
-using BackEndAlternativa.API.Models;
+using BackEndAlternativa.Domain.Models;
 using System;
 
 namespace BackEndAlternativa.API.Controllers.DTOs.Mapper

@@ -7,7 +7,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
 using BackEndAlternativa.API.Data.Repositories.Interfaces;
-using BackEndAlternativa.API.Models;
+using BackEndAlternativa.Domain.Models;
 using BackEndAlternativa.API.Controllers.DTOs.Queries;
 using BackEndAlternativa.API.Controllers.DTOs.Commands;
 using BackEndAlternativa.API.Data.Repositories.Filters;
@@ -37,6 +37,7 @@ namespace BackEndAlternativa.API.Controllers
         {
             IEnumerable<Categoria> categorias = await _repository.GetAll(query);
             return Ok(_mapper.Map<IEnumerable<CategoriaWithoutProdutosDTO>>(categorias));
+
         }
 
 

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BackEndAlternativa.API.Models
+namespace BackEndAlternativa.Domain.Models
 {
     public class Categoria
     {

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
-using BackEndAlternativa.API.Models;
+using BackEndAlternativa.Domain.Models;
 using BackEndAlternativa.API.Data.Repositories.Interfaces;
 using BackEndAlternativa.API.Controllers.DTOs.Queries;
 using BackEndAlternativa.API.Controllers.DTOs.Commands;

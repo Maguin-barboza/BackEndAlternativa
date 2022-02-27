@@ -1,11 +1,13 @@
-﻿using AspNetCore.IQueryable.Extensions.Filter;
-using BackEndAlternativa.API.Data.Repositories.Filters;
-using BackEndAlternativa.API.Data.Repositories.Interfaces;
-using BackEndAlternativa.API.Models;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
+using AspNetCore.IQueryable.Extensions.Filter;
+using Microsoft.EntityFrameworkCore;
+
+using BackEndAlternativa.API.Data.Repositories.Filters;
+using BackEndAlternativa.API.Data.Repositories.Interfaces;
+using BackEndAlternativa.Domain.Models;
 
 namespace BackEndAlternativa.API.Data.Repositories
 {
