@@ -8,10 +8,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 
-using BackEndAlternativa.API.Data;
-using BackEndAlternativa.API.Data.Repositories;
-using BackEndAlternativa.API.Data.Repositories.Interfaces;
-
 namespace BackEndAlternativa.API
 {
     public class Startup
@@ -28,11 +24,6 @@ namespace BackEndAlternativa.API
         {
             
             services.AddControllers();
-            
-            services.AddDbContext<AlternativaContext>(options => options.UseNpgsql(Configuration.GetConnectionString("Default")));
-            
-            services.AddScoped<IProdutoRepo, ProdutoRepo>();
-            services.AddScoped<ICategoriaRepo, CategoriaRepo>();
             
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

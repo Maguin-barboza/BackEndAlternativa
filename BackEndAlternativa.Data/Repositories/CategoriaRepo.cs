@@ -3,17 +3,13 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
-using AspNetCore.IQueryable.Extensions.Filter;
 
-using BackEndAlternativa.API.Data.Repositories.Filters;
-using BackEndAlternativa.API.Data.Repositories.Interfaces;
 using BackEndAlternativa.Domain.Models;
-
-
+using BackEndAlternativa.Domain.Interfaces.Repositories;
 
 namespace BackEndAlternativa.API.Data.Repositories
 {
-    public class CategoriaRepo : ICategoriaRepo
+    public class CategoriaRepo : ICategoriaRepository
     {
         private readonly AlternativaContext _context;
 
@@ -22,34 +18,36 @@ namespace BackEndAlternativa.API.Data.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Categoria>> GetAll(FilterCategoria query)
+        public async Task<IEnumerable<Categoria>> Select()
         {
-            return await _context.categorias.AsNoTracking().Filter(query).ToListAsync();
+            return await _context.categorias.AsNoTracking().ToListAsync();
         }
 
-        public async Task<Categoria> GetById(int Id)
+        public async Task<Categoria> Select(int Id)
         {
             return await _context.categorias.AsNoTracking().Where(cat => cat.Id == Id).Include(cat => cat.Produtos).FirstOrDefaultAsync();
         }
 
-        public void Insert(Categoria categoria)
+        public Categoria Insert(Categoria categoria)
         {
             _context.Add(categoria);
+            _context.SaveChanges();
+            
+            return categoria;
         }
 
-        public void Update(Categoria categoria)
+        public Categoria Update(Categoria categoria)
         {
             _context.Update(categoria);
+            _context.SaveChanges();
+
+            return categoria;
         }
 
         public void Delete(Categoria categoria)
         {
             _context.Remove(categoria);
-        }
-
-        public bool SaveChanges()
-        {
-            return _context.SaveChanges() > 0;
+            _context.SaveChanges();
         }
     }
 }

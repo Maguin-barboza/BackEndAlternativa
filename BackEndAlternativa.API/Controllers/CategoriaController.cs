@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
-using System.Linq;
-using System.Collections.Generic;
 
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
-using BackEndAlternativa.API.Data.Repositories.Interfaces;
-using BackEndAlternativa.Domain.Models;
-using BackEndAlternativa.API.Controllers.DTOs.Queries;
-using BackEndAlternativa.API.Controllers.DTOs.Commands;
-using BackEndAlternativa.API.Data.Repositories.Filters;
+using BackEndAlternativa.Domain.Interfaces.Services;
+using BackEndAlternativa.Domain.DTOs;
+using BackEndAlternativa.Domain.Results;
+using BackEndAlternativa.API.Controllers.Models.Input;
 
 
 
@@ -22,22 +19,22 @@ namespace BackEndAlternativa.API.Controllers
     [ApiController]
     public class CategoriaController : ControllerBase
     {
-        private readonly ICategoriaRepo _repository;
+        
         private readonly IMapper _mapper;
+        private readonly ICategoriaService _service;
 
-        public CategoriaController(ICategoriaRepo repository, IMapper mapper)
+        public CategoriaController(ICategoriaService service, IMapper mapper)
         {
-           _repository = repository;
-           _mapper = mapper;
+            _service = service;
+            _mapper = mapper;
         }
 
         // GET: api/<CategoriaController>
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] FilterCategoria query)
+        public async Task<IActionResult> Get()
         {
-            IEnumerable<Categoria> categorias = await _repository.GetAll(query);
-            return Ok(_mapper.Map<IEnumerable<CategoriaWithoutProdutosDTO>>(categorias));
-
+            ResultMany<CategoriaDTO> result = await _service.GetAll();
+            return Ok(result);
         }
 
 
@@ -45,22 +42,22 @@ namespace BackEndAlternativa.API.Controllers
         [HttpGet("{id:int}")]
         public async Task<IActionResult> Get(int id)
         {
-            Categoria categoria = await _repository.GetById(id);
-            return Ok(_mapper.Map<CategoriaWithProdutosDTO>(categoria));
+            ResultOne<CategoriaDTO> result = await _service.GetById(id);
+            return Ok(result);
         }
 
         // POST api/<CategoriaController>
         [HttpPost]
-        public IActionResult Post([FromBody] CategoriaAddDTO categoriaDTO)
+        public async Task<IActionResult> Post([FromBody] CategoriaInput categoriaInput)
         {
+            ResultBase result = new ResultBase();
+
             try
             {
-                Categoria categoria = _mapper.Map<Categoria>(categoriaDTO);
+                CategoriaDTO categoriaDTO = _mapper.Map<CategoriaDTO>(categoriaInput);
+                result = await _service.Add(categoriaDTO);
 
-                _repository.Insert(categoria);
-                _repository.SaveChanges();
-
-                return Ok();
+                return Ok(result);
             }
             catch(Exception ex)
             {
@@ -69,20 +66,20 @@ namespace BackEndAlternativa.API.Controllers
         }
 
         // PUT api/<CategoriaController>/5
-        [HttpPut]
-        public async Task<IActionResult> Put([FromBody] CategoriaUpdateDTO categoriaDTO)
+        [HttpPut("Id")]
+        public async Task<IActionResult> Put(int Id, [FromBody] CategoriaInput categoriaInput)
         {
+            ResultBase result = new ResultBase();
+
             try
             {
-                if (await CategoriaNotExists(categoriaDTO.Id))
-                    return BadRequest("Categoria não encontrada.");
+                if (await CategoriaNotExists(Id))
+                    throw new Exception("Categoria não encontrada.");
 
-                Categoria categoria = _mapper.Map<Categoria>(categoriaDTO);
+                CategoriaDTO categoriaUpdateDTO = _mapper.Map<CategoriaDTO>(categoriaInput);
+                result = await _service.Update(categoriaUpdateDTO);
 
-                _repository.Update(categoria);
-                _repository.SaveChanges();
-
-                return Ok();
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -91,25 +88,18 @@ namespace BackEndAlternativa.API.Controllers
         }
 
         // DELETE api/<CategoriaController>/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        [HttpDelete("{Id}")]
+        public async Task<IActionResult> Delete(int Id)
         {
+            ResultBase result = new ResultBase();
+
             try
             {
-                Categoria categoria = await _repository.GetById(id);
-                //TODO: Criar e lançar uma exception personalizada para estes casos. Ex: NotFoundException ou CanNotDeleteException
-                if (categoria is null)
-                    return BadRequest("Categoria não encontrada");
+                if (await CategoriaNotExists(Id))
+                    throw new Exception("Categoria não encontrada.");
 
-                if(categoria.Produtos.Count() > 0)
-                    return BadRequest("Categoria está ligada a produtos.\n" +
-                                      "Favor excluir os produtos dessa categoria para prosseguir com a exclusão.");
-                
-
-                _repository.Delete(categoria);
-                _repository.SaveChanges();
-
-                return Ok();
+                result = await _service.Delete(Id);
+                return Ok(result);
             }
             catch(Exception ex)
             {
@@ -119,8 +109,8 @@ namespace BackEndAlternativa.API.Controllers
 
         private async Task<bool> CategoriaNotExists(int id)
         {
-            Categoria categoria = await _repository.GetById(id);
-            return (categoria is null);
+            ResultOne<CategoriaDTO> resultCategoria = await _service.GetById(id);
+            return resultCategoria.item is null;
         }
     }
 }

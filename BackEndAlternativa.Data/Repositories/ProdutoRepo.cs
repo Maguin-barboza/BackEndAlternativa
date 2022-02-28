@@ -2,16 +2,14 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-using AspNetCore.IQueryable.Extensions.Filter;
 using Microsoft.EntityFrameworkCore;
 
-using BackEndAlternativa.API.Data.Repositories.Filters;
-using BackEndAlternativa.API.Data.Repositories.Interfaces;
 using BackEndAlternativa.Domain.Models;
+using BackEndAlternativa.Domain.Interfaces.Repositories;
 
 namespace BackEndAlternativa.API.Data.Repositories
 {
-    public class ProdutoRepo : IProdutoRepo
+    public class ProdutoRepo : IProdutoRepository
     {
         private readonly AlternativaContext _context;
 
@@ -20,36 +18,38 @@ namespace BackEndAlternativa.API.Data.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Produto>> GetAll(FilterProduto query)
+        public async Task<IEnumerable<Produto>> Select()
         {
-            return await _context.produtos.Filter(query).AsNoTracking().Include(prod => prod.Categoria).ToListAsync();
+            return await _context.produtos.AsNoTracking().Include(prod => prod.Categoria).ToListAsync();
         }
 
-        public async Task<Produto> GetById(int Id)
+        public async Task<Produto> Select(int Id)
         {
             return await _context.produtos.AsNoTracking().Where(prod => prod.Id == Id)
                                                          .Include(prod => prod.Categoria)
                                                          .FirstOrDefaultAsync();
         }
 
-        public void Insert(Produto produto)
+        public Produto Insert(Produto produto)
         {
             _context.Add(produto);
+            _context.SaveChanges();
+            
+            return produto;
         }
 
-        public void Update(Produto produto)
+        public Produto Update(Produto produto)
         {
             _context.Update(produto);
+            _context.SaveChanges();
+
+            return produto;
         }
 
         public void Delete(Produto produto)
         {
             _context.Remove(produto);
-        }
-
-        public bool SaveChanges()
-        {
-            return _context.SaveChanges() > 0;
+            _context.SaveChanges();
         }
     }
 }

@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
-using System.Linq;
-using System.Collections.Generic;
 
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
-using BackEndAlternativa.Domain.Models;
-using BackEndAlternativa.API.Data.Repositories.Interfaces;
-using BackEndAlternativa.API.Controllers.DTOs.Queries;
-using BackEndAlternativa.API.Controllers.DTOs.Commands;
-using BackEndAlternativa.API.Data.Repositories.Filters;
+using BackEndAlternativa.Domain.Interfaces.Services;
+using BackEndAlternativa.Domain.Results;
+using BackEndAlternativa.Domain.DTOs;
+using BackEndAlternativa.API.Controllers.Models.Input;
 
 
 
@@ -22,40 +19,40 @@ namespace BackEndAlternativa.API.Controllers
     [ApiController]
     public class ProdutoController : ControllerBase
     {
-        private readonly IProdutoRepo _repository;
+        private readonly IProdutoService _service;
         private readonly IMapper _mapper;
 
-        public ProdutoController(IProdutoRepo repository, IMapper mapper)
+        public ProdutoController(IProdutoService service, IMapper mapper)
         {
-            _repository = repository;
+            _service = service;
             _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] FilterProduto query)
+        public async Task<IActionResult> Get()
         {
-            IEnumerable<Produto> produtos = await _repository.GetAll(query);
-            return Ok(_mapper.Map<IEnumerable<ProdutoWithCategoriaDTO>>(produtos));
+            ResultMany<ProdutoDTO> result = await _service.GetAll();
+            return Ok(result);
         }
 
         [HttpGet("{id:int}")]
         public async Task<IActionResult> Get(int id)
         {
-            Produto produto = await _repository.GetById(id);
-            return Ok(_mapper.Map<ProdutoWithCategoriaDTO>(produto));
+            ResultOne<ProdutoDTO> result = await _service.GetById(id);
+            return Ok(result);
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] ProdutoAddDTO produtoDTO)
+        public async Task<IActionResult> Post([FromBody] ProdutoInput produtoInput)
         {
+            ResultBase result = new ResultBase();
             try
             {
-                Produto produto = _mapper.Map<Produto>(produtoDTO);
+                ProdutoDTO produtoDTO = _mapper.Map<ProdutoDTO>(produtoInput);
 
-                _repository.Insert(produto);
-                _repository.SaveChanges();
+                result = await _service.Add(produtoDTO);
 
-                return Ok();
+                return Ok(result);
             }
             catch(Exception ex)
             {
@@ -64,20 +61,21 @@ namespace BackEndAlternativa.API.Controllers
         }
 
         // PUT api/<ProdutoController>/5
-        [HttpPut]
-        public async Task<IActionResult> Put([FromBody] ProdutoUpdateDTO produtoDTO)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id, [FromBody] ProdutoInput produtoInput)
         {
+            ResultBase result = new ResultBase();
+
             try
             {
-                if (await ProdutoNotExists(produtoDTO.Id))
+                if (await ProdutoNotExists(id))
                     return BadRequest("Produto não encontrado");
 
-                Produto produto = _mapper.Map<Produto>(produtoDTO);
+                ProdutoDTO produtoDTO = _mapper.Map<ProdutoDTO>(produtoInput);
 
-                _repository.Update(produto);
-                _repository.SaveChanges();
+                result = await _service.Update(produtoDTO);
 
-                return Ok();
+                return Ok(result);
             }
             catch(Exception ex)
             {
@@ -85,33 +83,32 @@ namespace BackEndAlternativa.API.Controllers
             }
         }
 
-        private async Task<bool> ProdutoNotExists(int id)
-        {
-            Produto produto = await _repository.GetById(id);
-
-            return produto is null;
-        }
-
         // DELETE api/<ProdutoController>/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
+            ResultBase result = new ResultBase();
+
             try
             {
-                Produto produto = await _repository.GetById(id);
+                if (await ProdutoNotExists(id))
+                    return BadRequest("Produto não encontrado.");
 
-                if (produto is null)
-                    return BadRequest("Produto não encontrado");
+                result = await _service.Delete(id);
 
-                _repository.Delete(produto);
-                _repository.SaveChanges();
-
-                return Ok();
+                return Ok(result);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        private async Task<bool> ProdutoNotExists(int id)
+        {
+            ResultOne<ProdutoDTO> result = await _service.GetById(id);
+
+            return result.item is null;
         }
     }
 }
