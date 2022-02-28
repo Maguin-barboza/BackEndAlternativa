@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BackEndAlternativa.Domain",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackEndAlternativa.Data", "BackEndAlternativa.Data\BackEndAlternativa.Data.csproj", "{C045EF78-5B32-482E-A373-D0EB29BE6318}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackEndAlternativa.Services", "BackEndAlternativa.Services\BackEndAlternativa.Services.csproj", "{A6242475-B092-4630-AFE9-362F3B3AB9CB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{C045EF78-5B32-482E-A373-D0EB29BE6318}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C045EF78-5B32-482E-A373-D0EB29BE6318}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C045EF78-5B32-482E-A373-D0EB29BE6318}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6242475-B092-4630-AFE9-362F3B3AB9CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6242475-B092-4630-AFE9-362F3B3AB9CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6242475-B092-4630-AFE9-362F3B3AB9CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6242475-B092-4630-AFE9-362F3B3AB9CB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

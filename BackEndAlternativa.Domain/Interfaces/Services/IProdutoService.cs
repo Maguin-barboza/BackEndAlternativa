@@ -11,8 +11,8 @@ namespace BackEndAlternativa.Domain.Interfaces.Services
         Task<ResultMany<ProdutoDTO>> GetAll();
         Task<ResultOne<ProdutoDTO>> GetById(int id);
 
-        Task<ResultBase> Add(ProdutoDTO produtoDTO);
-        Task<ResultBase> Update(ProdutoDTO produtoDTO);
+        ResultBase Add(ProdutoDTO produtoDTO);
+        ResultBase Update(ProdutoDTO produtoDTO);
         Task<ResultBase> Delete(int id);
     }
 }

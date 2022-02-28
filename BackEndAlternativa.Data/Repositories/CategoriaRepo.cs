@@ -38,6 +38,7 @@ namespace BackEndAlternativa.API.Data.Repositories
 
         public Categoria Update(Categoria categoria)
         {
+            //TODO: Insert e update assincronos.
             _context.Update(categoria);
             _context.SaveChanges();
 

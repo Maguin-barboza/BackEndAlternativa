@@ -8,11 +8,11 @@ namespace BackEndAlternativa.Domain.Interfaces.Services
 {
     public interface ICategoriaService
     {
-        Task<ResultMany<CategoriaDTO>> GetAll();
-        Task<ResultOne<CategoriaDTO>> GetById(int id);
+        Task<CategoriaDTO> GetAll();
+        Task<CategoriaDTO> GetById(int id);
 
-        Task<ResultBase> Add(CategoriaDTO categoriaDTO);
-        Task<ResultBase> Update(CategoriaDTO categoriaDTO);
-        Task<ResultBase> Delete(int Id);
+        Task<CategoriaDTO> Add(CategoriaDTO categoriaDTO);
+        Task<CategoriaDTO> Update(CategoriaDTO categoriaDTO);
+        Task<bool> Delete(CategoriaDTO categoriaDTO);
     }
 }

@@ -9,6 +9,6 @@ namespace BackEndAlternativa.Domain.Results
     public class ResultBase
     {
         public bool Success { get; set; }
-        public string Messages { get; set; }
+        public string? Messages { get; set; }
     }
 }

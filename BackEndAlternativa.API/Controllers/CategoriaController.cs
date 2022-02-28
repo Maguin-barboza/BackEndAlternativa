@@ -19,7 +19,7 @@ namespace BackEndAlternativa.API.Controllers
     [ApiController]
     public class CategoriaController : ControllerBase
     {
-        
+
         private readonly IMapper _mapper;
         private readonly ICategoriaService _service;
 
@@ -33,8 +33,7 @@ namespace BackEndAlternativa.API.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            ResultMany<CategoriaDTO> result = await _service.GetAll();
-            return Ok(result);
+            return Ok(await _service.GetAll());
         }
 
 
@@ -42,44 +41,42 @@ namespace BackEndAlternativa.API.Controllers
         [HttpGet("{id:int}")]
         public async Task<IActionResult> Get(int id)
         {
-            ResultOne<CategoriaDTO> result = await _service.GetById(id);
-            return Ok(result);
+            return Ok(await _service.GetById(id));
         }
 
         // POST api/<CategoriaController>
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CategoriaInput categoriaInput)
         {
-            ResultBase result = new ResultBase();
-
             try
             {
+                //TODO: Fazer Mapeamento de Inputs para DTOs.
                 CategoriaDTO categoriaDTO = _mapper.Map<CategoriaDTO>(categoriaInput);
-                result = await _service.Add(categoriaDTO);
+                categoriaDTO = await _service.Add(categoriaDTO);
 
-                return Ok(result);
+                return Ok(new ResultOne<CategoriaDTO>() { item = categoriaDTO, Success = true });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
 
         // PUT api/<CategoriaController>/5
-        [HttpPut("Id")]
-        public async Task<IActionResult> Put(int Id, [FromBody] CategoriaInput categoriaInput)
+        [HttpPut("id")]
+        public async Task<IActionResult> Put(int id, [FromBody] CategoriaInput categoriaInput)
         {
-            ResultBase result = new ResultBase();
-
             try
             {
-                if (await CategoriaNotExists(Id))
-                    throw new Exception("Categoria não encontrada.");
+                CategoriaDTO categoria = await _service.GetById(id);
+
+                if (categoria is null)
+                    return BadRequest("categoria não foi encontrada.");
 
                 CategoriaDTO categoriaUpdateDTO = _mapper.Map<CategoriaDTO>(categoriaInput);
-                result = await _service.Update(categoriaUpdateDTO);
+                categoriaUpdateDTO = await _service.Update(categoriaUpdateDTO);
 
-                return Ok(result);
+                return Ok(new ResultOne<CategoriaDTO> { item = categoriaUpdateDTO, Success = true });
             }
             catch (Exception ex)
             {
@@ -88,29 +85,24 @@ namespace BackEndAlternativa.API.Controllers
         }
 
         // DELETE api/<CategoriaController>/5
-        [HttpDelete("{Id}")]
-        public async Task<IActionResult> Delete(int Id)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
         {
-            ResultBase result = new ResultBase();
-
             try
             {
-                if (await CategoriaNotExists(Id))
-                    throw new Exception("Categoria não encontrada.");
+                CategoriaDTO categoriaDTO = await _service.GetById(id);
 
-                result = await _service.Delete(Id);
-                return Ok(result);
+                if (categoriaDTO is null)
+                    return BadRequest("categoria não foi encontrada.");
+
+                _service.Delete(categoriaDTO);
+
+                return Ok(new ResultBase() { Success = true });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
-        }
-
-        private async Task<bool> CategoriaNotExists(int id)
-        {
-            ResultOne<CategoriaDTO> resultCategoria = await _service.GetById(id);
-            return resultCategoria.item is null;
         }
     }
 }
