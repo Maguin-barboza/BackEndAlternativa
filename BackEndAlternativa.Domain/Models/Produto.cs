@@ -6,16 +6,16 @@ namespace BackEndAlternativa.Domain.Models
     {
         [Column("id")]
         public int Id { get; set; }
-        [Column("nome")]
-        public string Nome { get; set; }
-        [Column("descricao")]
-        public string Descricao { get; set; }
-        [Column("valor")]
-        public decimal Valor { get; set; }
-        [Column("marca")]
-        public string Marca { get; set; }
-        [Column("categoriaid")]
-        public int CategoriaId { get; set; }
+        [Column("name")]
+        public string Name { get; set; }
+        [Column("description")]
+        public string Description { get; set; }
+        [Column("value")]
+        public decimal Value { get; set; }
+        [Column("brand")]
+        public string Brand { get; set; }
+        [Column("category_id")]
+        public int Category_Id { get; set; }
         public Categoria Categoria { get; set; }
     }
 }

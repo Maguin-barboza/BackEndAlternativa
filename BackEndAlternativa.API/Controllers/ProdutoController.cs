@@ -8,6 +8,7 @@ using BackEndAlternativa.Domain.Interfaces.Services;
 using BackEndAlternativa.Domain.Results;
 using BackEndAlternativa.Domain.DTOs;
 using BackEndAlternativa.API.Controllers.Models.Input;
+using System.Collections.Generic;
 
 
 
@@ -31,30 +32,28 @@ namespace BackEndAlternativa.API.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            ResultMany<ProdutoDTO> result = await _service.GetAll();
-            return Ok(result);
+            IEnumerable<ProdutoDTO> produtosDTO = await _service.GetAll();
+            return Ok(new ResultMany<ProdutoDTO>() { Success = true, items = produtosDTO });
         }
 
         [HttpGet("{id:int}")]
         public async Task<IActionResult> Get(int id)
         {
-            ResultOne<ProdutoDTO> result = await _service.GetById(id);
-            return Ok(result);
+            ProdutoDTO produtoDTO = await _service.GetById(id);
+            return Ok(new ResultOne<ProdutoDTO>() { Success = true, item = produtoDTO });
         }
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] ProdutoInput produtoInput)
         {
-            ResultBase result = new ResultBase();
             try
             {
                 ProdutoDTO produtoDTO = _mapper.Map<ProdutoDTO>(produtoInput);
+                produtoDTO = _service.Add(produtoDTO);
 
-                result = await _service.Add(produtoDTO);
-
-                return Ok(result);
+                return Ok(new ResultOne<ProdutoDTO>() { Success = true, item = produtoDTO });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -64,20 +63,18 @@ namespace BackEndAlternativa.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, [FromBody] ProdutoInput produtoInput)
         {
-            ResultBase result = new ResultBase();
-
             try
             {
-                if (await ProdutoNotExists(id))
+                ProdutoDTO produtoDTO = await _service.GetById(id);
+                if (produtoDTO is null)
                     return BadRequest("Produto não encontrado");
 
-                ProdutoDTO produtoDTO = _mapper.Map<ProdutoDTO>(produtoInput);
+                produtoDTO = _mapper.Map<ProdutoDTO>(produtoInput);
+                produtoDTO = _service.Update(produtoDTO);
 
-                result = await _service.Update(produtoDTO);
-
-                return Ok(result);
+                return Ok(new ResultOne<ProdutoDTO>() { Success = true, item = produtoDTO });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -87,28 +84,21 @@ namespace BackEndAlternativa.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            ResultBase result = new ResultBase();
-
             try
             {
-                if (await ProdutoNotExists(id))
+                ProdutoDTO produtoDTO = await _service.GetById(id);
+
+                if (produtoDTO is null)
                     return BadRequest("Produto não encontrado.");
 
-                result = await _service.Delete(id);
+                produtoDTO = _service.Delete(produtoDTO);
 
-                return Ok(result);
+                return Ok(new ResultOne<ProdutoDTO>() { Success = true, item = produtoDTO });
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
-        }
-
-        private async Task<bool> ProdutoNotExists(int id)
-        {
-            ResultOne<ProdutoDTO> result = await _service.GetById(id);
-
-            return result.item is null;
         }
     }
 }

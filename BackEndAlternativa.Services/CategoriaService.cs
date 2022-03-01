@@ -16,17 +16,17 @@ namespace BackEndAlternativa.Services
             throw new System.NotImplementedException();
         }
 
-        public Task<CategoriaDTO> Add(CategoriaDTO categoriaDTO)
+        public CategoriaDTO Add(CategoriaDTO categoriaDTO)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<CategoriaDTO> Update(CategoriaDTO categoriaDTO)
+        public CategoriaDTO Update(CategoriaDTO categoriaDTO)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<bool> Delete(CategoriaDTO categoriaDTO)
+        public CategoriaDTO Delete(CategoriaDTO categoriaDTO)
         {
             throw new System.NotImplementedException();
         }

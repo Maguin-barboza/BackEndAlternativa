@@ -46,10 +46,12 @@ namespace BackEndAlternativa.API.Data.Repositories
             return produto;
         }
 
-        public void Delete(Produto produto)
+        public Produto Delete(Produto produto)
         {
             _context.Remove(produto);
             _context.SaveChanges();
+
+            return produto;
         }
     }
 }

@@ -12,6 +12,6 @@ namespace BackEndAlternativa.Domain.Interfaces.Repositories
 
         Produto Insert(Produto produto);
         Produto Update(Produto produto);
-        void Delete(Produto produto);
+        Produto Delete(Produto produto);
     }
 }

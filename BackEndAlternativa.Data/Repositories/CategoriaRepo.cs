@@ -45,10 +45,12 @@ namespace BackEndAlternativa.API.Data.Repositories
             return categoria;
         }
 
-        public void Delete(Categoria categoria)
+        public Categoria Delete(Categoria categoria)
         {
             _context.Remove(categoria);
             _context.SaveChanges();
+
+            return categoria;
         }
     }
 }

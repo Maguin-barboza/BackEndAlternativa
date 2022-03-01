@@ -11,8 +11,8 @@ namespace BackEndAlternativa.Domain.Interfaces.Services
         Task<CategoriaDTO> GetAll();
         Task<CategoriaDTO> GetById(int id);
 
-        Task<CategoriaDTO> Add(CategoriaDTO categoriaDTO);
-        Task<CategoriaDTO> Update(CategoriaDTO categoriaDTO);
-        Task<bool> Delete(CategoriaDTO categoriaDTO);
+        CategoriaDTO Add(CategoriaDTO categoriaDTO);
+        CategoriaDTO Update(CategoriaDTO categoriaDTO);
+        CategoriaDTO Delete(CategoriaDTO categoriaDTO);
     }
 }

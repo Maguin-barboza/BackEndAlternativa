@@ -9,10 +9,10 @@ namespace BackEndAlternativa.Domain.DTOs
     public class ProdutoDTO
     {
         public int Id { get; set; }
-        public string Nome { get; set; }
-        public string Descricao { get; set; }
-        public decimal Valor { get; set; }
-        public string Marca { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public decimal Value { get; set; }
+        public string Brand { get; set; }
         public CategoriaDTO Categoria { get; set; }
     }
 }

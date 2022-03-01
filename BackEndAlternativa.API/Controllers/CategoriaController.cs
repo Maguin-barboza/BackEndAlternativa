@@ -52,7 +52,7 @@ namespace BackEndAlternativa.API.Controllers
             {
                 //TODO: Fazer Mapeamento de Inputs para DTOs.
                 CategoriaDTO categoriaDTO = _mapper.Map<CategoriaDTO>(categoriaInput);
-                categoriaDTO = await _service.Add(categoriaDTO);
+                categoriaDTO = _service.Add(categoriaDTO);
 
                 return Ok(new ResultOne<CategoriaDTO>() { item = categoriaDTO, Success = true });
             }
@@ -74,7 +74,7 @@ namespace BackEndAlternativa.API.Controllers
                     return BadRequest("categoria não foi encontrada.");
 
                 CategoriaDTO categoriaUpdateDTO = _mapper.Map<CategoriaDTO>(categoriaInput);
-                categoriaUpdateDTO = await _service.Update(categoriaUpdateDTO);
+                categoriaUpdateDTO = _service.Update(categoriaUpdateDTO);
 
                 return Ok(new ResultOne<CategoriaDTO> { item = categoriaUpdateDTO, Success = true });
             }
@@ -95,9 +95,9 @@ namespace BackEndAlternativa.API.Controllers
                 if (categoriaDTO is null)
                     return BadRequest("categoria não foi encontrada.");
 
-                _service.Delete(categoriaDTO);
+                categoriaDTO = _service.Delete(categoriaDTO);
 
-                return Ok(new ResultBase() { Success = true });
+                return Ok(new ResultOne<CategoriaDTO>() { item = categoriaDTO, Success = true });
             }
             catch (Exception ex)
             {

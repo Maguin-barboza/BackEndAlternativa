@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
 
-using BackEndAlternativa.API.Controllers.DTOs.Commands;
-using BackEndAlternativa.API.Controllers.DTOs.Queries;
+using BackEndAlternativa.Domain.DTOs;
 using BackEndAlternativa.Domain.Models;
-using System;
+
 
 namespace BackEndAlternativa.API.Controllers.DTOs.Mapper
 {
@@ -11,24 +10,8 @@ namespace BackEndAlternativa.API.Controllers.DTOs.Mapper
     {
         public AlternativaProfile()
         {
-            CreateQueriesMaps();
-            CreateCommandsMaps();
-        }
-
-        private void CreateQueriesMaps()
-        {
-            CreateMap<Categoria, CategoriaWithoutProdutosDTO>();
-            CreateMap<Categoria, CategoriaWithProdutosDTO>();
-            CreateMap<Produto, ProdutoWithCategoriaDTO>();
-        }
-
-        private void CreateCommandsMaps()
-        {
-            CreateMap<CategoriaAddDTO, Categoria>();
-            CreateMap<CategoriaUpdateDTO, Categoria>();
-
-            CreateMap<ProdutoAddDTO, Produto>();
-            CreateMap<ProdutoUpdateDTO, Produto>();
+            CreateMap<Produto,ProdutoDTO>().ReverseMap();
+            CreateMap<Categoria, CategoriaDTO>().ReverseMap();
         }
     }
 }

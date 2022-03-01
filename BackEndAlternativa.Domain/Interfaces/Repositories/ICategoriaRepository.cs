@@ -12,7 +12,7 @@ namespace BackEndAlternativa.Domain.Interfaces.Repositories
 
         Categoria Insert(Categoria categoria);
         Categoria Update(Categoria categoria);
-        void Delete(Categoria categoria);
+        Categoria Delete(Categoria categoria);
 
     }
 }

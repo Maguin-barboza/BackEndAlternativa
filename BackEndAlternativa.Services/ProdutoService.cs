@@ -24,40 +24,40 @@ namespace BackEndAlternativa.Services
         }
         
         //TODO: Retornar somente o DTO, e não a classe Result.
-        public async Task<ResultMany<ProdutoDTO>> GetAll()
+        public async Task<IEnumerable<ProdutoDTO>> GetAll()
         {
             IEnumerable<ProdutoDTO> produtosDTO = _mapper.Map<IEnumerable<ProdutoDTO>>(_repository.Select());
-            return new ResultMany<ProdutoDTO>() { items = produtosDTO, Success = true };
+            return produtosDTO;
         }
 
-        public async Task<ResultOne<ProdutoDTO>> GetById(int id)
+        public async Task<ProdutoDTO> GetById(int id)
         {
             ProdutoDTO produtoDTO = _mapper.Map<ProdutoDTO>(await _repository.Select(id));
-            return new ResultOne<ProdutoDTO>() { item = produtoDTO, Success = true };
+            return produtoDTO;
         }
 
-        public ResultBase Add(ProdutoDTO produtoDTO)
+        public ProdutoDTO Add(ProdutoDTO produtoDTO)
         {
             Produto produto = _mapper.Map<Produto>(produtoDTO);
             produto = _repository.Insert(produto);
 
-            return new ResultBase() { Messages = $"Produto {produto.Id} inserido com sucesso.", Success = true };
+            return _mapper.Map<ProdutoDTO>(produto);
         }
 
-        public ResultBase Update(ProdutoDTO produtoDTO)
+        public ProdutoDTO Update(ProdutoDTO produtoDTO)
         {
             Produto produto = _mapper.Map<Produto>(produtoDTO);
             produto = _repository.Update(produto);
 
-            return new ResultBase() { Messages = $"Produto {produto.Id}, alterado com sucesso.", Success = true };
+            return _mapper.Map<ProdutoDTO>(produto);
         }
 
-        public async Task<ResultBase> Delete(int id)
+        public ProdutoDTO Delete(ProdutoDTO produtoDTO)
         {
-            Produto produto = await _repository.Select(id);
-            _repository.Delete(produto);
+            Produto produto = _mapper.Map<Produto>(produtoDTO);
+            produto = _repository.Delete(produto);
 
-            return new ResultBase() { Success = true, Messages = $"Produto {produto.Id} deletado com sucesso." };
+            return _mapper.Map<ProdutoDTO>(produto);
         }
     }
 }

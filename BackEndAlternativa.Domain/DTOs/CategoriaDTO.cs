@@ -9,8 +9,8 @@ namespace BackEndAlternativa.Domain.DTOs
     public class CategoriaDTO
     {
         public int Id { get; set; }
-        public string Nome { get; set; }
-        public string Descricao { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
 
         public IEnumerable<ProdutoDTO> Produtos { get; set; }
     }
