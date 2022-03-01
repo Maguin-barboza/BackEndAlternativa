@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 
 using BackEndAlternativa.Domain.DTOs;
-using BackEndAlternativa.Domain.Results;
 
 namespace BackEndAlternativa.Domain.Interfaces.Services
 {

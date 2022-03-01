@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 
 using BackEndAlternativa.Domain.Interfaces.Services;
 using BackEndAlternativa.Domain.DTOs;
-using BackEndAlternativa.Domain.Results;
 using BackEndAlternativa.API.Controllers.Models.Input;
 using BackEndAlternativa.Services.Utils.Exceptions;
 
@@ -55,7 +54,7 @@ namespace BackEndAlternativa.API.Controllers
                 CategoriaDTO categoriaDTO = _mapper.Map<CategoriaDTO>(categoriaInput);
                 categoriaDTO = _service.Add(categoriaDTO);
 
-                return Ok(new ResultOne<CategoriaDTO>() { item = categoriaDTO, Success = true });
+                return Ok(categoriaDTO);
             }
             catch (Exception ex)
             {
@@ -78,7 +77,7 @@ namespace BackEndAlternativa.API.Controllers
                 categoriaUpdateDTO.Id = id;
                 categoriaUpdateDTO = _service.Update(categoriaUpdateDTO);
 
-                return Ok(new ResultOne<CategoriaDTO> { item = categoriaUpdateDTO, Success = true });
+                return Ok(categoriaUpdateDTO);
             }
             catch (Exception ex)
             {
@@ -99,7 +98,7 @@ namespace BackEndAlternativa.API.Controllers
 
                 categoriaDTO = _service.Delete(categoriaDTO);
 
-                return Ok(new ResultOne<CategoriaDTO>() { item = categoriaDTO, Success = true });
+                return Ok(categoriaDTO);
             }
             catch(DeleteCategoryWithProductsException ex)
             {

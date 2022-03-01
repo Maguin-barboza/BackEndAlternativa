@@ -7,7 +7,6 @@ using BackEndAlternativa.Domain.DTOs;
 using BackEndAlternativa.Domain.Interfaces.Repositories;
 using BackEndAlternativa.Domain.Interfaces.Services;
 using BackEndAlternativa.Domain.Models;
-using BackEndAlternativa.Domain.Results;
 
 
 namespace BackEndAlternativa.Services

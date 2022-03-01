@@ -5,10 +5,8 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
 using BackEndAlternativa.Domain.Interfaces.Services;
-using BackEndAlternativa.Domain.Results;
 using BackEndAlternativa.Domain.DTOs;
 using BackEndAlternativa.API.Controllers.Models.Input;
-using System.Collections.Generic;
 
 
 
@@ -32,15 +30,13 @@ namespace BackEndAlternativa.API.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            IEnumerable<ProdutoDTO> produtosDTO = await _service.GetAll();
-            return Ok(new ResultMany<ProdutoDTO>() { Success = true, items = produtosDTO });
+            return Ok(await _service.GetAll());
         }
 
         [HttpGet("{id:int}")]
         public async Task<IActionResult> Get(int id)
         {
-            ProdutoDTO produtoDTO = await _service.GetById(id);
-            return Ok(new ResultOne<ProdutoDTO>() { Success = true, item = produtoDTO });
+            return Ok(await _service.GetById(id));
         }
 
         [HttpPost]
@@ -51,7 +47,7 @@ namespace BackEndAlternativa.API.Controllers
                 ProdutoDTO produtoDTO = _mapper.Map<ProdutoDTO>(produtoInput);
                 produtoDTO = _service.Add(produtoDTO);
 
-                return Ok(new ResultOne<ProdutoDTO>() { Success = true, item = produtoDTO });
+                return Ok(produtoDTO);
             }
             catch (Exception ex)
             {
@@ -73,7 +69,7 @@ namespace BackEndAlternativa.API.Controllers
                 produtoDTO.Id = id;
                 produtoDTO = _service.Update(produtoDTO);
 
-                return Ok(new ResultOne<ProdutoDTO>() { Success = true, item = produtoDTO });
+                return Ok(produtoDTO);
             }
             catch (Exception ex)
             {
@@ -94,7 +90,7 @@ namespace BackEndAlternativa.API.Controllers
 
                 produtoDTO = _service.Delete(produtoDTO);
 
-                return Ok(new ResultOne<ProdutoDTO>() { Success = true, item = produtoDTO });
+                return Ok(produtoDTO);
             }
             catch (Exception ex)
             {
