@@ -20,7 +20,8 @@ namespace BackEndAlternativa.API.Data.Repositories
 
         public async Task<IEnumerable<Produto>> Select()
         {
-            return await _context.produtos.AsNoTracking().Include(prod => prod.Categoria).ToListAsync();
+            IEnumerable<Produto> produtos = await _context.produtos.AsNoTracking().Include(prod => prod.Categoria).ToListAsync();
+            return produtos;
         }
 
         public async Task<Produto> Select(int Id)

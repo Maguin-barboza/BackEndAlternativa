@@ -1,15 +1,15 @@
 CREATE TABLE Categorias(
 	Id SERIAL PRIMARY KEY,
-	Nome VARCHAR(70),
-	Descricao TEXT
+	Name VARCHAR(70),
+	Description TEXT
 );
 
 
 CREATE TABLE Produtos(
 	Id SERIAL PRIMARY KEY,
-	Nome VARCHAR(70) NOT NULL,
-	Descricao TEXT,
-	Valor NUMERIC CHECK(Valor >= 0) NOT NULL DEFAULT 0.,
-	Marca VARCHAR(80),
-	CategoriaId INT REFERENCES Categorias(Id)
+	Name VARCHAR(70) NOT NULL,
+	Description TEXT,
+	Value NUMERIC CHECK(Value >= 0) NOT NULL DEFAULT 0.,
+	Brand VARCHAR(80),
+	Category_Id INT REFERENCES Categorias(Id)
 );

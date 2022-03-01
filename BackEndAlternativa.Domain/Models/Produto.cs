@@ -15,7 +15,7 @@ namespace BackEndAlternativa.Domain.Models
         [Column("brand")]
         public string Brand { get; set; }
         [Column("category_id")]
-        public int Category_Id { get; set; }
+        public int CategoriaId { get; set; }
         public Categoria Categoria { get; set; }
     }
 }

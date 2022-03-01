@@ -1,5 +1,5 @@
 using System;
-
+using BackEndAlternativa.CrossCutting.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +29,9 @@ namespace BackEndAlternativa.API
 
             services.AddControllers().AddNewtonsoftJson(
                         opt => opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+            
+            ConfigureService.ConfigureDependenciesService(services);
+            ConfigureRepository.ConfigureDependeciesRepository(services);
 
             services.AddSwaggerGen(c =>
             {

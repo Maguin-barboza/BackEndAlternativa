@@ -13,6 +13,7 @@ namespace BackEndAlternativa.Domain.DTOs
         public string Description { get; set; }
         public decimal Value { get; set; }
         public string Brand { get; set; }
+        public int CategoriaId { get; set; }
         public CategoriaDTO Categoria { get; set; }
     }
 }

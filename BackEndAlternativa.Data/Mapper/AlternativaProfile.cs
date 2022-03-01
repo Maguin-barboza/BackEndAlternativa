@@ -1,17 +1,14 @@
-﻿using AutoMapper;
-
-using BackEndAlternativa.Domain.DTOs;
-using BackEndAlternativa.Domain.Models;
-
-
-namespace BackEndAlternativa.API.Controllers.DTOs.Mapper
+﻿namespace BackEndAlternativa.API.Controllers.DTOs.Mapper
 {
-    public class AlternativaProfile: Profile
+    public class AlternativaProfile//: Profile
     {
-        public AlternativaProfile()
-        {
-            CreateMap<Produto,ProdutoDTO>().ReverseMap();
-            CreateMap<Categoria, CategoriaDTO>().ReverseMap();
-        }
+        //public AlternativaProfile()
+        //{
+        //    CreateMap<Produto,ProdutoDTO>();
+        //    CreateMap<ProdutoDTO, Produto>();
+            
+        //    CreateMap<Categoria, CategoriaDTO>();
+        //    CreateMap<CategoriaDTO, Categoria>();
+        //}
     }
 }

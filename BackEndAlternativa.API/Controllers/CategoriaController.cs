@@ -8,6 +8,7 @@ using BackEndAlternativa.Domain.Interfaces.Services;
 using BackEndAlternativa.Domain.DTOs;
 using BackEndAlternativa.Domain.Results;
 using BackEndAlternativa.API.Controllers.Models.Input;
+using BackEndAlternativa.Services.Utils.Exceptions;
 
 
 
@@ -74,6 +75,7 @@ namespace BackEndAlternativa.API.Controllers
                     return BadRequest("categoria não foi encontrada.");
 
                 CategoriaDTO categoriaUpdateDTO = _mapper.Map<CategoriaDTO>(categoriaInput);
+                categoriaUpdateDTO.Id = id;
                 categoriaUpdateDTO = _service.Update(categoriaUpdateDTO);
 
                 return Ok(new ResultOne<CategoriaDTO> { item = categoriaUpdateDTO, Success = true });
@@ -98,6 +100,10 @@ namespace BackEndAlternativa.API.Controllers
                 categoriaDTO = _service.Delete(categoriaDTO);
 
                 return Ok(new ResultOne<CategoriaDTO>() { item = categoriaDTO, Success = true });
+            }
+            catch(DeleteCategoryWithProductsException ex)
+            {
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {

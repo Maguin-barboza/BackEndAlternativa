@@ -26,7 +26,8 @@ namespace BackEndAlternativa.Services
         //TODO: Retornar somente o DTO, e não a classe Result.
         public async Task<IEnumerable<ProdutoDTO>> GetAll()
         {
-            IEnumerable<ProdutoDTO> produtosDTO = _mapper.Map<IEnumerable<ProdutoDTO>>(_repository.Select());
+            IEnumerable<Produto> produtos = await _repository.Select();
+            IEnumerable<ProdutoDTO> produtosDTO = _mapper.Map<IEnumerable<ProdutoDTO>>(produtos);
             return produtosDTO;
         }
 

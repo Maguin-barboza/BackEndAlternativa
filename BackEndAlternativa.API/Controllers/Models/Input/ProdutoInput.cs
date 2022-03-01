@@ -25,6 +25,6 @@
         /// <summary>
         /// IdCategoria do Produto
         /// </summary>
-        public int CategoryId { get; set; }
+        public int Category_Id { get; set; }
     }
 }

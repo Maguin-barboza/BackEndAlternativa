@@ -70,6 +70,7 @@ namespace BackEndAlternativa.API.Controllers
                     return BadRequest("Produto não encontrado");
 
                 produtoDTO = _mapper.Map<ProdutoDTO>(produtoInput);
+                produtoDTO.Id = id;
                 produtoDTO = _service.Update(produtoDTO);
 
                 return Ok(new ResultOne<ProdutoDTO>() { Success = true, item = produtoDTO });

@@ -8,7 +8,7 @@ namespace BackEndAlternativa.Domain.Interfaces.Services
 {
     public interface ICategoriaService
     {
-        Task<CategoriaDTO> GetAll();
+        Task<IEnumerable<CategoriaDTO>> GetAll();
         Task<CategoriaDTO> GetById(int id);
 
         CategoriaDTO Add(CategoriaDTO categoriaDTO);
